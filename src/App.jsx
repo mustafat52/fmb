@@ -39,6 +39,73 @@ function useFonts() {
   }, []);
 }
 
+const GLOBAL_CSS = `
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  input[type=number] { -moz-appearance: textfield; }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .num-input { font-family: 'IBM Plex Sans', sans-serif; font-variant-numeric: tabular-nums; font-size: 16px; }
+  .num-input:focus { outline: 2px solid #1F4B43; outline-offset: -1px; }
+  input, button { font-size: 16px; }
+
+  .app-container { max-width: 980px; margin: 0 auto; padding: 28px 20px 80px; }
+  .app-header-inner { max-width: 980px; margin: 0 auto; padding: 24px 20px 0; }
+  .header-top-row { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .download-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; margin-top: 2px; border-radius: 6px; border: 1px solid #1F4B43; background: #1F4B43; color: #FDFBF6; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .app-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 28px; margin: 0; letter-spacing: -0.01em; }
+
+  .menu-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; max-width: 520px; }
+  .menu-label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #6B6558; white-space: nowrap; }
+  .menu-input { flex: 1; min-width: 0; padding: 9px 10px; border: 1px solid #E2DACB; border-radius: 6px; font-size: 15px; background: #FFFFFF; font-family: inherit; }
+
+  .tabs-row { display: flex; gap: 4px; }
+  .tab-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border: none; cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 12px; margin-bottom: 28px; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(38,36,31,0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+  .modal-shell { background: #FDFBF6; border-radius: 12px; width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; box-shadow: 0 12px 32px rgba(38,36,31,0.25); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #ECE6D8; position: sticky; top: 0; background: #FDFBF6; }
+  .modal-body { padding: 18px 20px 28px; }
+
+  .payment-form-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; }
+  .payment-field { display: flex; flex-direction: column; gap: 4px; }
+  .payment-save-btn { padding: 10px 16px; border-radius: 6px; border: 1px solid #1F4B43; background: #1F4B43; color: #FDFBF6; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; }
+
+  .add-member-row { display: flex; gap: 8px; }
+
+  .grid-input { padding: 8px 4px; border: 1px solid #E2DACB; border-radius: 5px; text-align: center; background: #FDFBF6; }
+
+  @media (max-width: 640px) {
+    .app-container { padding: 18px 12px 72px; }
+    .app-header-inner { padding: 16px 12px 0; }
+    .header-top-row { flex-direction: column; align-items: stretch; gap: 10px; }
+    .download-btn { width: 100%; }
+    .app-title { font-size: 22px; }
+
+    .menu-row { flex-direction: column; align-items: stretch; gap: 6px; max-width: none; }
+
+    .tab-btn { flex: 1; padding: 10px 6px; font-size: 13px; }
+
+    .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+    .modal-overlay { align-items: flex-end; padding: 0; }
+    .modal-shell { max-width: 100%; border-radius: 14px 14px 0 0; max-height: 92vh; }
+    .modal-body { padding: 16px 14px 24px; }
+
+    .payment-form-row { flex-direction: column; align-items: stretch; }
+    .payment-field { width: 100%; }
+    .payment-field input { width: 100% !important; }
+    .payment-save-btn { width: 100%; margin-top: 4px; }
+
+    .add-member-row { flex-direction: column; }
+
+    .grid-input { min-width: 40px; padding: 9px 2px; }
+
+    table th, table td { padding: 6px 5px !important; font-size: 13px !important; }
+  }
+`;
+
 export default function App() {
   useFonts();
   const [tab, setTab] = useState("tiffin");
@@ -93,17 +160,11 @@ export default function App() {
 
   return (
     <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", background: "#F6F2E9", minHeight: "100vh", color: "#26241F" }}>
-      <style>{`
-        input[type=number] { -moz-appearance: textfield; }
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        .num-input { font-family: 'IBM Plex Sans', sans-serif; font-variant-numeric: tabular-nums; }
-        .num-input:focus { outline: 2px solid #1F4B43; outline-offset: -1px; }
-      `}</style>
+      <style>{GLOBAL_CSS}</style>
 
       <Header tab={tab} setTab={setTab} menu={menu} setMenu={setMenu} onDownload={downloadReport} />
 
-      <div style={{ maxWidth: 980, margin: "0 auto", padding: "28px 20px 80px" }}>
+      <div className="app-container">
         {tab === "tiffin" ? (
           <TiffinModule
             totalMade={totalMade} setTotalMade={setTotalMade}
@@ -121,45 +182,33 @@ export default function App() {
 function Header({ tab, setTab, menu, setMenu, onDownload }) {
   return (
     <div style={{ borderBottom: "1px solid #E2DACB", background: "#FDFBF6" }}>
-      <div style={{ maxWidth: 980, margin: "0 auto", padding: "24px 20px 0" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+      <div className="app-header-inner">
+        <div className="header-top-row">
           <div>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 28, margin: 0, letterSpacing: "-0.01em" }}>
-              Thaali Daftar
-            </h1>
+            <h1 className="app-title">Thaali Daftar</h1>
             <p style={{ margin: "4px 0 16px", color: "#6B6558", fontSize: 14 }}>
               FMB Kitchen Register &middot; Hyderabad Jamaat &middot; {new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
             </p>
           </div>
-          <button
-            onClick={onDownload}
-            style={{
-              display: "flex", alignItems: "center", gap: 8,
-              padding: "9px 16px", marginTop: 2,
-              borderRadius: 6, border: "1px solid #1F4B43",
-              background: "#1F4B43", color: "#FDFBF6",
-              fontSize: 13, fontWeight: 500, cursor: "pointer",
-              fontFamily: "inherit",
-            }}
-          >
+          <button onClick={onDownload} className="download-btn">
             <Download size={15} /> Download today's report
           </button>
         </div>
 
-        <label style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18, maxWidth: 520 }}>
-          <span style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#6B6558", whiteSpace: "nowrap" }}>
+        <label className="menu-row">
+          <span className="menu-label">
             <UtensilsCrossed size={14} /> Today's menu
           </span>
           <input
+            className="menu-input"
             type="text"
             value={menu}
             onChange={e => setMenu(e.target.value)}
             placeholder="e.g. Dal, Rice, Sabzi, Roti"
-            style={{ flex: 1, padding: "7px 10px", border: "1px solid #E2DACB", borderRadius: 6, fontSize: 13, background: "#FFFFFF", fontFamily: "inherit" }}
           />
         </label>
 
-        <div style={{ display: "flex", gap: 4 }}>
+        <div className="tabs-row">
           <TabButton active={tab === "tiffin"} onClick={() => setTab("tiffin")} icon={<Package size={16} />} label="Tiffin Distribution" />
           <TabButton active={tab === "roti"} onClick={() => setTab("roti")} icon={<Users size={16} />} label="Roti Register" />
         </div>
@@ -172,17 +221,13 @@ function TabButton({ active, onClick, icon, label }) {
   return (
     <button
       onClick={onClick}
+      className="tab-btn"
       style={{
-        display: "flex", alignItems: "center", gap: 8,
-        padding: "10px 18px",
-        border: "none",
         borderBottom: active ? "2px solid #1F4B43" : "2px solid transparent",
         background: "transparent",
         color: active ? "#1F4B43" : "#8A8375",
         fontWeight: active ? 600 : 500,
         fontSize: 15,
-        cursor: "pointer",
-        fontFamily: "'IBM Plex Sans', sans-serif",
       }}
     >
       {icon}{label}
@@ -224,7 +269,7 @@ function TiffinModule({ totalMade, setTotalMade, volunteers, setVolunteers, self
   return (
     <div>
       {/* Summary strip */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 28 }}>
+      <div className="summary-grid">
         <SummaryCard label="Made today" value={fmt(grandMade)} sub="all sizes" />
         <SummaryCard label="Distributed" value={fmt(grandDistributed)} sub={`${((grandDistributed / grandMade) * 100).toFixed(0)}% of made`} />
         <SummaryCard
@@ -252,7 +297,7 @@ function TiffinModule({ totalMade, setTotalMade, volunteers, setVolunteers, self
                 type="number"
                 value={totalMade[size]}
                 onChange={e => setTotalMade({ ...totalMade, [size]: e.target.value })}
-                style={{ width: 82, padding: "8px 10px", border: "1px solid #E2DACB", borderRadius: 6, fontSize: 15, background: "#FDFBF6" }}
+                style={{ width: 88, padding: "10px 10px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FDFBF6" }}
               />
             </label>
           ))}
@@ -290,7 +335,7 @@ function TiffinModule({ totalMade, setTotalMade, volunteers, setVolunteers, self
                       <Td style={{ textAlign: "left", fontWeight: 500 }}>{v.name}</Td>
                       <Td>
                         <input
-                          className="num-input"
+                          className="num-input grid-input"
                           type="number"
                           value={v.quota}
                           onChange={e => {
@@ -298,17 +343,17 @@ function TiffinModule({ totalMade, setTotalMade, volunteers, setVolunteers, self
                             next[idx] = { ...next[idx], quota: e.target.value };
                             setVolunteers(next);
                           }}
-                          style={{ width: 52, padding: "6px", border: "1px solid #E2DACB", borderRadius: 5, textAlign: "center", background: "#FAF6EC", color: "#6B6558" }}
+                          style={{ width: 56, background: "#FAF6EC", color: "#6B6558" }}
                         />
                       </Td>
                       {SIZES.map(size => (
                         <Td key={size}>
                           <input
-                            className="num-input"
+                            className="num-input grid-input"
                             type="number"
                             value={v.delivered[size]}
                             onChange={e => updateDelivered(volunteers, setVolunteers, idx, size, e.target.value)}
-                            style={{ width: 52, padding: "6px", border: "1px solid #E2DACB", borderRadius: 5, textAlign: "center", background: "#FDFBF6" }}
+                            style={{ width: 56, background: "#FDFBF6" }}
                           />
                         </Td>
                       ))}
@@ -334,11 +379,11 @@ function TiffinModule({ totalMade, setTotalMade, volunteers, setVolunteers, self
                       {SIZES.map(size => (
                         <Td key={size}>
                           <input
-                            className="num-input"
+                            className="num-input grid-input"
                             type="number"
                             value={v.delivered[size]}
                             onChange={e => updateDelivered(selfService, setSelfService, idx, size, e.target.value)}
-                            style={{ width: 52, padding: "6px", border: "1px solid #E2DACB", borderRadius: 5, textAlign: "center", background: "#FDFBF6" }}
+                            style={{ width: 56, background: "#FDFBF6" }}
                           />
                         </Td>
                       ))}
@@ -458,7 +503,7 @@ function RotiModule({ women, setWomen, rotiPrice, setRotiPrice, payments, setPay
 
   return (
     <div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 28 }}>
+      <div className="summary-grid">
         <SummaryCard label="Women contributing" value={fmt(women.length)} sub="fixed list" />
         <SummaryCard label="Rotis today" value={fmt(total)} sub="all entries" />
         <SummaryCard label="Avg. per person" value={women.length ? (total / women.length).toFixed(1) : "0"} sub="today" />
@@ -596,23 +641,17 @@ function RotiModule({ women, setWomen, rotiPrice, setRotiPrice, payments, setPay
   );
 }
 
-function ModalShell({ title, onClose, width = 480, children }) {
+function ModalShell({ title, onClose, children }) {
   return (
-    <div
-      onClick={onClose}
-      style={{ position: "fixed", inset: 0, background: "rgba(38,36,31,0.4)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 50 }}
-    >
-      <div
-        onClick={e => e.stopPropagation()}
-        style={{ background: "#FDFBF6", borderRadius: 10, width: "100%", maxWidth: width, maxHeight: "85vh", overflowY: "auto", boxShadow: "0 12px 32px rgba(38,36,31,0.25)" }}
-      >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #ECE6D8" }}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-shell" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
           <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 600, margin: 0 }}>{title}</h3>
-          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#8A8375", padding: 4 }}>
-            <X size={18} />
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#8A8375", padding: 6 }}>
+            <X size={20} />
           </button>
         </div>
-        <div style={{ padding: 20 }}>{children}</div>
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );
@@ -632,7 +671,7 @@ function RotiSettingsModal({ women, rotiPrice, setRotiPrice, onAdd, onRemove, on
             type="number"
             value={rotiPrice}
             onChange={e => setRotiPrice(e.target.value)}
-            style={{ width: 90, padding: "8px 10px", border: "1px solid #E2DACB", borderRadius: 6, fontSize: 15, background: "#FFFFFF" }}
+            style={{ width: 90, padding: "10px 10px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FFFFFF" }}
           />
           <span style={{ fontSize: 12, color: "#8A8375" }}>applied to all members</span>
         </div>
@@ -654,17 +693,17 @@ function RotiSettingsModal({ women, rotiPrice, setRotiPrice, onAdd, onRemove, on
             </div>
           ))}
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div className="add-member-row">
           <input
             type="text"
             value={newName}
             onChange={e => setNewName(e.target.value)}
             placeholder="New member name"
-            style={{ flex: 1, padding: "8px 10px", border: "1px solid #E2DACB", borderRadius: 6, fontSize: 14, background: "#FFFFFF", fontFamily: "inherit" }}
+            style={{ flex: 1, padding: "10px 10px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FFFFFF", fontFamily: "inherit" }}
           />
           <button
             onClick={() => { onAdd(newName); setNewName(""); }}
-            style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 6, border: "1px solid #1F4B43", background: "#1F4B43", color: "#FDFBF6", fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "inherit" }}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "10px 14px", borderRadius: 6, border: "1px solid #1F4B43", background: "#1F4B43", color: "#FDFBF6", fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "inherit" }}
           >
             <Plus size={14} /> Add
           </button>
@@ -685,7 +724,7 @@ function MemberDetailModal({ name, member, rotiPrice, payments, onRecordPayment,
 
   return (
     <ModalShell title={name} onClose={onClose}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 20 }}>
+      <div className="summary-grid" style={{ marginBottom: 20 }}>
         <SummaryCard label="Rotis this month" value={fmt(total)} sub="\u00d7 22 days" />
         <SummaryCard label="Rate" value={`\u20b9${rotiPrice}`} sub="per roti" />
         <SummaryCard label="Amount due" value={`\u20b9${fmt(Math.max(0, amountDue))}`} sub={amountDue <= 0 ? "paid up" : "pending"} tone={amountDue > 0 ? "alert" : "good"} />
@@ -695,39 +734,39 @@ function MemberDetailModal({ name, member, rotiPrice, payments, onRecordPayment,
         <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 10, display: "flex", alignItems: "center", gap: 6 }}>
           <Wallet size={14} /> Record a payment
         </div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
-          <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <div className="payment-form-row">
+          <label className="payment-field">
             <span style={{ fontSize: 11, color: "#8A8375" }}>Amount</span>
             <input
               className="num-input"
               type="number"
               value={amount}
               onChange={e => setAmount(e.target.value)}
-              style={{ width: 100, padding: "7px 9px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FFFFFF" }}
+              style={{ width: 100, padding: "9px 9px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FFFFFF" }}
             />
           </label>
-          <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <label className="payment-field">
             <span style={{ fontSize: 11, color: "#8A8375" }}>Date</span>
             <input
               type="date"
               value={date}
               onChange={e => setDate(e.target.value)}
-              style={{ padding: "7px 9px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FFFFFF", fontFamily: "inherit" }}
+              style={{ padding: "9px 9px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FFFFFF", fontFamily: "inherit" }}
             />
           </label>
-          <label style={{ display: "flex", flexDirection: "column", gap: 4, flex: 1, minWidth: 120 }}>
+          <label className="payment-field" style={{ flex: 1, minWidth: 120 }}>
             <span style={{ fontSize: 11, color: "#8A8375" }}>Note (optional)</span>
             <input
               type="text"
               value={note}
               onChange={e => setNote(e.target.value)}
               placeholder="e.g. Cash, via Hakim bhai"
-              style={{ padding: "7px 9px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FFFFFF", fontFamily: "inherit" }}
+              style={{ padding: "9px 9px", border: "1px solid #E2DACB", borderRadius: 6, background: "#FFFFFF", fontFamily: "inherit" }}
             />
           </label>
           <button
             onClick={() => { if (Number(amount) > 0) { onRecordPayment(Number(amount), date, note); setNote(""); } }}
-            style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #1F4B43", background: "#1F4B43", color: "#FDFBF6", fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "inherit" }}
+            className="payment-save-btn"
           >
             Save
           </button>
